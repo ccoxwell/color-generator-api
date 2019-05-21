@@ -4,11 +4,11 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import { MongoClient } from "mongodb";
 import { strict as assert } from "assert";
-
+dotenv.config();
 const url = process.env.MONGODB_URI;
 const dbName = "color-generator";
 const client = new MongoClient(url, {useNewUrlParser: true});
-dotenv.config();
+
 
 const app = express();
 app.use(bodyParser.json());
