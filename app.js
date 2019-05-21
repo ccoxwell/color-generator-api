@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 const PORT = process.env.PORT;
 var db;
+console.log(url);
 
 client.connect(function(err, database) {
 	assert.equal(null, err);
