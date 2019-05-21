@@ -6,7 +6,7 @@ import { MongoClient } from "mongodb";
 import { strict as assert } from "assert";
 dotenv.config();
 const url = process.env.MONGODB_LETS_TRY_THIS;
-const dbName = "color-generator";
+const dbName = process.env.MONGODB_NAME;
 const client = new MongoClient(url, {useNewUrlParser: true});
 
 
