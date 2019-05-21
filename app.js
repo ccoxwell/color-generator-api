@@ -5,8 +5,8 @@ import dotenv from "dotenv";
 import { MongoClient } from "mongodb";
 import { strict as assert } from "assert";
 
-const url = "mongodb://localhost:27017";
-const dbName = "color-generator";
+const url = process.env.MONGODB_URL || "mongodb://localhost:27017";
+const dbName = process.env.MONGOUSER;
 const client = new MongoClient(url, {useNewUrlParser: true});
 dotenv.config();
 
