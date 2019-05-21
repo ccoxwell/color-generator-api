@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import { MongoClient } from "mongodb";
 import { strict as assert } from "assert";
 
-const url = process.env.MONGODB_URL;
+const url = process.env.MONGODB_URI;
 const dbName = "heroku_w5rj6zjd";
 const client = new MongoClient(url, {useNewUrlParser: true});
 dotenv.config();
