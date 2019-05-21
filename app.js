@@ -11,9 +11,9 @@ const client = new MongoClient(url, {useNewUrlParser: true});
 
 
 const app = express();
+app.use(allowCORS);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(allowCORS);
 const PORT = process.env.PORT;
 var db;
 
