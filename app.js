@@ -61,6 +61,7 @@ app.get("/api/v1/historical-colors", function getHistoricalColors(req, res) {
 	});
 });
 
+// https://stackoverflow.com/questions/11001817/allow-cors-rest-request-to-a-express-node-js-application-on-heroku
 function allowCrossDomain(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
