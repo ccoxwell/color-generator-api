@@ -4,15 +4,16 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import { MongoClient } from "mongodb";
 import { strict as assert } from "assert";
-
-const url = process.env.MONGODB_URI;
-const dbName = "heroku_w5rj6zjd";
-const client = new MongoClient(url, {useNewUrlParser: true});
 dotenv.config();
+const url = process.env.MONGODB_URI;
+const dbName = "color-generator";
+const client = new MongoClient(url, {useNewUrlParser: true});
+
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(allowCORS);
 const PORT = process.env.PORT;
 var db;
 
@@ -57,5 +58,11 @@ app.get("/api/v1/historical-colors", function getHistoricalColors(req, res) {
 			}
 		});
 	});
-})
+});
 
+function allowCORS(res, req, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+	res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With");
+	next();
+}
