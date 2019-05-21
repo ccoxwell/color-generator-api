@@ -11,7 +11,8 @@ function generateColor() {
 
 	return {
 		rgb: {r, g, b},
-		hex: `${rHex}${gHex}${bHex}`
+		hex: `${rHex}${gHex}${bHex}`,
+		timestamp: Date.now()
 	};
 }
 
