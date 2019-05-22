@@ -11,7 +11,6 @@ const client = new MongoClient(url, {useNewUrlParser: true});
 
 
 const app = express();
-app.use(allowCrossDomain);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 const PORT = process.env.PORT;
@@ -60,18 +59,3 @@ app.get("/api/v1/historical-colors", function getHistoricalColors(req, res) {
 		});
 	});
 });
-
-// https://stackoverflow.com/questions/11001817/allow-cors-rest-request-to-a-express-node-js-application-on-heroku
-function allowCrossDomain(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-
-    // intercept OPTIONS method
-    if ('OPTIONS' == req.method) {
-      res.send(200);
-    }
-    else {
-      next();
-    }
-}
