@@ -18,9 +18,12 @@ function generateColor() {
 	g = Math.floor(g * 256);
 	let b = Math.random();
 	b = Math.floor(b * 256);
-	let rHex = r.toString(16).toUpperCase();
-	let gHex = g.toString(16).toUpperCase();
-	let bHex = b.toString(16).toUpperCase();
+	let rString = r.toString(16).toUpperCase();
+	let rHex = rString.length == 2 ? rString : `0${rString}`;
+	let gString = g.toString(16).toUpperCase();
+	let gHex = gString.length == 2 ? gString : `0${gString}`;
+	let bString = b.toString(16).toUpperCase();
+	let bHex = bString.length == 2 ? bString : `0${bString}`;
 	let color = {
 		rgb: {r, g, b},
 		hex: `${rHex}${gHex}${bHex}`,
