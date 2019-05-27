@@ -1,15 +1,29 @@
-const MongoClient = require("mongodb").MongoClient;
+// const MongoClient = require("mongodb").MongoClient;
 const assert = require("assert").strict;
 const dotenv = require("dotenv");
+const mysql = require("mysql");
 dotenv.config();
-const url = process.env.MONGODB_LETS_TRY_THIS;
-const dbName = process.env.MONGODB_NAME;
-const client = new MongoClient(url, {useNewUrlParser: true});
+// const url = process.env.MONGODB_LETS_TRY_THIS;
+// const dbName = process.env.MONGODB_NAME;
+// const client = new MongoClient(url, {useNewUrlParser: true});
 
-client.connect(function(err, database) {
-	assert.equal(null, err);
-	console.log("Connected successfully to database server");
-});
+// client.connect(function(err, database) {
+// 	assert.equal(null, err);
+// 	console.log("Connected successfully to database server");
+// });
+
+// var connection = mysql.createConnection({
+// 	host: process.env.MYSQL_URI,
+// 	user: process.env.MYSQL_USER,
+// 	password: process.env.MYSQL_PW
+// });
+
+// connection.connect(function(err) {
+// 	if (err) {
+// 		throw err;
+// 	}
+// 	console.log("Connected!");
+// })
 
 function generateColor() {
 	let r = Math.random();
@@ -24,31 +38,71 @@ function generateColor() {
 	let gHex = gString.length == 2 ? gString : `0${gString}`;
 	let bString = b.toString(16).toUpperCase();
 	let bHex = bString.length == 2 ? bString : `0${bString}`;
+	let timestamp = Date.now();
 	let color = {
 		rgb: {r, g, b},
 		hex: `${rHex}${gHex}${bHex}`,
-		timestamp: Date.now()
+		timestamp
 	}
-	return client.db(dbName).collection("colors").insertOne(color);
+	var hex = `${rHex}${gHex}${bHex}`;
+	var sql = "INSERT INTO historical_colors (red, green, blue, hex, timestamp) VALUES ('" + r + "', '" + g + "', '" + b + "', '" + hex + "', '" + timestamp + "')";
+	return connectionPromise(sql, null, color);
 }
 
-function saveColor(color) {
-	var collection = client.db(dbName).collection("colors");
-	collection.insertOne(color);
+function connectionPromise(sql, values, valToResolve) {
+	var connection = mysql.createConnection({
+		host: process.env.MYSQL_URI,
+		user: process.env.MYSQL_USER,
+		password: process.env.MYSQL_PW,
+		database: "colors"
+	});
+
+	connection.connect(function(err) {
+		if (err) {
+			throw err;
+		}
+		console.log("Connected to database!");
+	});
+	return new Promise(function(resolve, reject) {
+		connection.query(sql, values, function(err, result, fields) {
+			if (err) {
+				reject(err);
+			}
+			resolve(valToResolve);
+		});
+	});
 }
 
-function getHistoricalColors(db) {
-	var colorDocs = [];
-	return client.db(dbName).collection("colors").find().toArray().then(function(docs) {
-		colorDocs = docs;
-		return new Promise(function(resolve, reject) {
-			resolve(colorDocs);
+// function saveColor(color) {
+// 	var collection = client.db(dbName).collection("colors");
+// 	collection.insertOne(color);
+// }
+
+function getHistoricalColors(sql, values, valToResolve) {
+	var connection = mysql.createConnection({
+		host: process.env.MYSQL_URI,
+		user: process.env.MYSQL_USER,
+		password: process.env.MYSQL_PW,
+		database: "colors"
+	});
+	connection.connect(function(err) {
+		if (err) {
+			throw err;
+		}
+		console.log("connected to database!");
+	});
+	return new Promise(function(resolve, reject) {
+		connection.query("SELECT * FROM historical_colors", values, function(err, result) {
+			if (err) {
+				reject(err);
+			}
+			resolve(result);
 		});
 	});
 }
 
 module.exports = {
 	generateColor,
-	saveColor,
+	// saveColor,
 	getHistoricalColors
 }
