@@ -52,8 +52,8 @@ function generateColor() {
 function connectionPromise(sql, values, valToResolve) {
 	var connection = mysql.createConnection({
 		host: process.env.CLEARDB_DATABASE_URL,
-		user: process.env.MYSQL_USER,
-		password: process.env.MYSQL_PW,
+		// user: process.env.DB_USERNAME,
+		// password: process.env.DB_PASSWORD,
 		database: "colors"
 	});
 
