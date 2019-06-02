@@ -26,7 +26,7 @@ function generateColor() {
 	let bHex = bString.length == 2 ? bString : `0${bString}`;
 	let color = {
 		rgb: {r, g, b},
-		hex: `${rHex}${gHex}${bHex}`,
+		hex: `#${rHex}${gHex}${bHex}`,
 		timestamp: Date.now()
 	}
 	return client.db(dbName).collection("colors").insertOne(color);
